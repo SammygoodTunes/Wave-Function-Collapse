@@ -23,6 +23,8 @@ The connectors determine which tiles can stick themselves to other tiles, a tile
 There's also a player you can move around (just a square for now). Collision between the player and the map is done with pixel colour analysis: checking that pixels' colour around the player corresponds to a colour you can walk on. It's not amazing, it may change, or maybe not.
 
 
+All tiles are contained within the ```/src``` folder along with a random script that I wrote with the Pillow library to take the 6 tiles I originally had, rotate and save them every 90° clockwise (stops at 270°). Like that, I had rotated versions of the tiles (yes, that could've been implemented efficiently in the WFC script without having to create millions of images, but that's for another time).
+
 To regenerate the map, you obviously have to close and re-open the script. Won't be for long though (if all goes to plan).
 
 <p align="center">

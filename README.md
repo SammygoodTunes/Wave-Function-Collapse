@@ -61,11 +61,11 @@ This is essentially how the sockets work.
 </p>
 
 The player's position after the map generation has finished is based on the presence of one specific tile (ID 0: "SAFE TILE" in the code).
-The function 
+The function:
 ```python
 find_ideal_spot_for_player()
 ```
-is responsible for finding that position by ultimately going through each cell and finding all those that have the SAFE TILE and then choosing randomly from that list as the starting point for that player.
+  -is responsible for finding that position by ultimately going through each cell and finding all those that have the SAFE TILE and then choosing randomly from that list as the starting point for that player.
 In terms of collisions between the player and the tiles, the colours of the pixels from the player center of the player on all four sides (because it's a square) are analysed. If it picks out a specific GREEN (0, 182, 0, 255)  colour, you can freely walk on it as you please. Any other colours in a certain direction will prevent the player from moving in that direction. The function below is responsible for all of that.
 
 ```python

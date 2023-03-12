@@ -39,5 +39,6 @@ To install the necessary library(ies) to run the script:
 
 Developed by: SammygoodTunes
 
-
 Library(ies) used: Pygame 2.2.0, Pillow 8.4.0
+
+Version: 1.0.0

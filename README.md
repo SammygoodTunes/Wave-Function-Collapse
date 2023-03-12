@@ -25,8 +25,10 @@ There's also a player you can move around (just a square for now). Collision bet
 
 To regenerate the map, you obviously have to close and re-open the script. Won't be for long though (if all goes to plan).
 
-![example1](https://user-images.githubusercontent.com/56520787/224519286-6032b439-3579-4810-8ebc-9c3a9d355692.png)
-![example2](https://user-images.githubusercontent.com/56520787/224519280-e7f9e217-428a-452c-8215-7b7a2eaa50d1.png)
+<p align="center">
+  <img width="400" height="400" src="https://user-images.githubusercontent.com/56520787/224519286-6032b439-3579-4810-8ebc-9c3a9d355692.png">
+  <img width="400" height="400" src="https://user-images.githubusercontent.com/56520787/224519280-e7f9e217-428a-452c-8215-7b7a2eaa50d1.png">
+</p>
 
 
 ## Controls:

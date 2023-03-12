@@ -1,7 +1,6 @@
 # Wave-Function-Collapse
 Small unfinished game implementing the Wave Function Collapse algorithm
 
-## Explanation:
 
 ## Explanation:
 

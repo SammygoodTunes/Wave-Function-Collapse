@@ -2,7 +2,7 @@
 Small unfinished game implementing the Wave Function Collapse algorithm
 
 
-## Explanation:
+## Introduction:
 
 Quantum mechanics introduces this concept when a wave function reduces to a single eigenstate from several caused by interaction with the outside world.
 
@@ -13,6 +13,8 @@ However, in this particular case, Wave Function Collapse allows for procedurally
 This is especially useful for level design in video games, the hassle of manually designing games makes using WFC better in a way. Not always though.
 Anyway, this was my attempt at it.
 
+
+## Explanation:
 
 A map is generated from a set of tiles and rules using the socket technique where each side of the tile has one or multiple connectors, each identified by a number or letter.
 

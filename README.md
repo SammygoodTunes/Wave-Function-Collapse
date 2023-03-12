@@ -81,6 +81,12 @@ def update(self):
       self.x += self.speed
 ```
 
+The dimensions of the grid and the size of the tiles can be altered with the GRID_SIZE and IMAGE_DIM variables.
+```python
+self.IMAGE_DIM = 48
+self.GRID_SIZE = 15
+```
+
 ### Tiles:
 
 <p align="center">

@@ -1,6 +1,8 @@
 
 import pygame
 import os
+import sys
+import time
 import random as r
 from PIL import Image
 
@@ -12,6 +14,7 @@ class Window:
 		self.MAX_ALLOWED_FPS = 60
 		self.COLOUR_BLACK = (0, 0, 0)
 		self.COLOUR_WHITE = (255, 255, 255)
+		self.COLOUR_RED = (255, 0, 0)
 
 		self.width = width
 		self.height = height
@@ -29,7 +32,7 @@ class Window:
 		pygame.display.flip()
 		# self.instance.fill(self.COLOUR_BLACK, (0, 0, self.width, self.height))
 		self.clock.tick(self.MAX_ALLOWED_FPS)
-		
+
 	def get_width(self):
 		"""Return width of window"""
 		return self.width
@@ -67,7 +70,7 @@ class Map():
 		self.finished_generating = False
 
 		self.window = Window(
-								self.get_image_size() * self.get_grid_size(), 
+								self.get_image_size() * self.get_grid_size(),
 								self.get_image_size() * self.get_grid_size()
 							)
 
@@ -100,17 +103,21 @@ class Map():
 				self.window.instance.blit(pygame.transform.scale(pygame.image.frombytes(self.tiles[tile_index].tobytes(), (16, 16), 'RGB'), (self.get_image_size(), self.get_image_size())), (x*self.get_image_size(), y*self.get_image_size()))
 				#pygame.draw.rect(self.window.instance, (50, 50, 50), (x*self.get_image_size(), y*self.get_image_size(), self.get_image_size(), self.get_image_size()), 1)
 
+	def player_close_to_enemy(self, player, enemy):
+		"""Return True if player is close to enemy, else False"""
+		return False
 
-	def find_ideal_spot_for_player(self):
+
+	def find_ideal_spot_for_entity(self):
 		"""Locate safe tile for player to stand on, on load."""
 		grid_copy = self.grid.copy()
 		ideal_spots = []
-		
+
 		for i, cell in enumerate(grid_copy):
 			if cell["options"][0] == self.SAFE_TILE and cell["collapsed"]:
 				ideal_spots.append([i, cell])
 		ideal_cell = r.choice(ideal_spots)
-	
+
 		x, y = -1, -1
 		for i, cell in enumerate(grid_copy):
 			x = i % self.get_grid_size()
@@ -141,7 +148,7 @@ class Map():
 	def get_image_size(self):
 		"""Return size of tile texture."""
 		return self.IMAGE_DIM
-		
+
 	def setup(self):
 		"""Setup necessary data."""
 
@@ -199,7 +206,7 @@ class Map():
 		# Check cell above, below, to the left and to the right of the targeted cell.
 		if not self.cell["collapsed"]:
 			good_options = []
-			bad_options = []				
+			bad_options = []
 
 			# Upper cell
 			if (self.grid_y > 0):
@@ -232,7 +239,7 @@ class Map():
 				left_cell = self.grid[self.left]
 				if left_cell["collapsed"]:
 					left_cell_tile_values = self.tile_values[left_cell["options"][0]]
-					
+
 					for option in self.cell["options"]:
 						cell_tile_values = self.tile_values[option]
 						if cell_tile_values[3] == left_cell_tile_values[1]:
@@ -245,7 +252,7 @@ class Map():
 				right_cell = self.grid[self.right]
 				if right_cell["collapsed"]:
 					right_cell_tile_values = self.tile_values[right_cell["options"][0]]
-					
+
 					for option in self.cell["options"]:
 						cell_tile_values = self.tile_values[option]
 						if cell_tile_values[1] == right_cell_tile_values[3]:
@@ -267,7 +274,7 @@ class Map():
 			# If there are still good options, randomly choose one regardless of whether there is only one or not.
 			if len(filtered_good_options) > 0:
 				if 0 in filtered_good_options:
-					for i in range(r.randint(4, 10)):
+					for i in range(r.randint(8, 12)):
 						filtered_good_options.append(0)
 				random_good_option = r.choice(filtered_good_options)
 				self.grid[self.index]["collapsed"] = True
@@ -319,6 +326,59 @@ class Player:
 		return self.size
 
 
+class Enemy:
+
+	def __init__(self, map_, x, y, size, speed):
+		self.map = map_
+		self.x = x
+		self.y = y
+		self.up = False
+		self.down = False
+		self.left = False
+		self.right = False
+		self.speed = speed
+		self.size = size
+		self.start_ts = time.time()
+		self.timer = 0
+		self.can_see_player = False
+
+	def ai(self):
+		if time.time() - self.start_ts >= self.timer:
+			self.up, self.down, self.left, self.right = False, False, False, False
+			self.start_ts = time.time()
+			self.timer = r.uniform(0, 3)
+			move = r.randint(0, 10)
+			match move:
+				case 0:
+					self.up = True
+				case 1:
+					self.down = True
+				case 2:
+					self.left = True
+				case 3:
+					self.right = True
+
+
+	def update(self):
+		self.ai()
+		if self.up:
+			if self.map.window.instance.get_at((self.x + int(self.size / 2), self.y - 2)) == self.map.SAFE_TILE_COLOUR and self.y > 10:
+				self.y -= self.speed
+		if self.down:
+			if self.map.window.instance.get_at((self.x + int(self.size / 2), self.y + self.size + 2)) == self.map.SAFE_TILE_COLOUR and self.y < self.map.window.get_height() - 20:
+				self.y += self.speed
+		if self.left:
+			if self.map.window.instance.get_at((self.x - 2, self.y + int(self.size / 2))) == self.map.SAFE_TILE_COLOUR and self.x > 10:
+				self.x -= self.speed
+		if self.right:
+			if self.map.window.instance.get_at((self.x + self.size + 2, self.y + int(self.size / 2))) == self.map.SAFE_TILE_COLOUR and self.x < self.map.window.get_width() - 20:
+				self.x += self.speed
+
+	def get_rect(self):
+		return (self.x, self.y, self.size, self.size)
+
+
+
 def main():
 	"""Main function"""
 
@@ -335,8 +395,13 @@ def main():
 		map_.generate()
 		map_.window.update()
 
-	player_location = map_.find_ideal_spot_for_player()
+	player_location = map_.find_ideal_spot_for_entity()
 	player = Player(map_, player_location[0]+int(map_.get_image_size() / 2) - 5, player_location[1]+int(map_.get_image_size() / 2) - 5, 10)
+
+	enemy_location = map_.find_ideal_spot_for_entity()
+	while enemy_location == player_location:
+		enemy_location = map_.find_ideal_spot_for_entity()
+	enemy = Enemy(map_, enemy_location[0]+int(map_.get_image_size() / 2) - 5, enemy_location[1]+int(map_.get_image_size() / 2) - 5, 10, 2)
 
 	# Commence draw loop.
 	while map_.window.get_window_state():
@@ -367,16 +432,23 @@ def main():
 						player.right = False
 
 		player.update()
+		enemy.update()
+		enemy.can_see_player = True if map_.player_close_to_enemy(player, enemy) else False
+
 		map_.update_map()
 		pygame.draw.rect(map_.window.instance, map_.window.COLOUR_WHITE, (player.get_rect()))
+		#pygame.draw.circle(map_.window.instance, (0, 0, 0, 50), (enemy.x+5, enemy.y+5), 25)
+		# distance = math.hypot(center.x1 - center.x2, center.y1 - center.y2)
+		pygame.draw.rect(map_.window.instance, map_.window.COLOUR_RED, (enemy.get_rect()))
 
 
 		# Update window
 		map_.window.update()
 
-	pygame.quit()		
-	
-	
+	pygame.quit()
+	sys.exit()
+
+
 
 
 if __name__ == '__main__':

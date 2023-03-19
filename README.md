@@ -158,4 +158,4 @@ Credit to (for the explanatory videos): The Coding Train, Martin Donald
 
 Library(ies) used: Pygame 2.2.0, Pillow 8.4.0
 
-Version: 1.0.0
+Version: 1.0.1

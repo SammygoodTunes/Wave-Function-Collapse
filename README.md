@@ -4,13 +4,13 @@ Small unfinished game implementing the Wave Function Collapse algorithm
 
 ## Introduction:
 
-Quantum mechanics introduces this concept when a wave function reduces to a single eigenstate from several caused by interaction with the outside world.
+Quantum mechanics introduces this concept when a wave function reduces from several to a single eigenstate caused by interaction with the outside world.
 
 
 However, in this particular case, Wave Function Collapse allows for procedurally generated images based on a single or multiple smaller images given as input, where patterns within them will be analysed to generate something of the same theme, but variated.
 
 
-This is especially useful for level design in video games, the hassle of manually designing games makes using WFC better in a way. Not always though.
+This is especially useful for level design in video games, the hassle of manually designing levels for games makes using WFC better in a way. Not always though.
 Anyway, this was my attempt at it.
 
 
@@ -22,7 +22,7 @@ A map is generated from a set of tiles and rules using the socket technique wher
 The connectors determine which tiles can stick themselves to other tiles, a tile can only connect to another when both sockets of the sides that collide are equivalent.
 
 
-There's also a player you can move around (just a square for now). Collision between the player and the map is done with pixel colour analysis: checking that pixels' colour around the player corresponds to a colour you can walk on. It's not amazing, it may change, or maybe not.
+There's also a player you can move around (just a square for now) as well as an enemy (still a work-in-progress). Collision between the player and the map is done with pixel colour analysis: checking that pixels' colour around the player corresponds to a colour you can walk on. It's not amazing, it may change, or maybe not.
 
 
 All tiles are contained within the ```/src``` folder along with a random script that I wrote with the Pillow library to take the 6 tiles I originally had, rotate and save them every 90° clockwise (stops at 270°). Like that, I had rotated versions of the tiles (yes, that could've been implemented efficiently in the WFC script without having to create millions of images, but that's for another time).

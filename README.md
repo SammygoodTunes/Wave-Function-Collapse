@@ -128,7 +128,7 @@ self.GRID_SIZE = 15
 
 ## Controls:
 
-[Arrow Keys] -> Move player
+- [**Arrow Keys**] -> Move player
 
 
 ## Installation information:
@@ -138,16 +138,13 @@ A "requirements" text file is provided within the repository.
 
 To install the necessary library(ies) to run the script:
 
-1- Open CMD or GitBash
+1- Open CMD/Git Bash/Terminal
 
 
 2- Change the current directory to the project path (cd path\\to\\project)
 
 
-3- Install the library(ies) from the "requirements.txt" file using:
-  ```
-  pip install -r requirements.txt
-  ```
+3- Install the library(ies) from the "requirements.txt" file with: `pip install -r requirements.txt`
 
 
 ## Development information:
